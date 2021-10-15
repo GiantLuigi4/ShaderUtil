@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "tfc.shaderutil.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "PostProcessShaderMixin"
+  ],
+  "client": [
+    "GameRendererMixin",
+    "JsonEffectGlShaderMixin",
+    "ShaderEffectMixin",
+    "ShaderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

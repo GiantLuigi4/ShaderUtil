@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "shaderutil",
+  "version": "${version}",
+  "name": "ShaderUtil",
+  "description": "A library mod for making your own vanilla shaders and also adding post processing shaders",
+  "authors": [
+    "GiantLuigi4"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/ShaderUtil/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "tfc.shaderutil.client.ShaderUtilClient"
+    ]
+  },
+  "mixins": [
+    "ShaderUtil.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.1",
+    "minecraft": "1.17.1"
+  }
+}
