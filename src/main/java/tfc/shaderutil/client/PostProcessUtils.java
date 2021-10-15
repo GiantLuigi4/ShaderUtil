@@ -26,7 +26,7 @@ public class PostProcessUtils {
 		return ((GameRendererAccessor)MinecraftClient.getInstance().gameRenderer).getPass(passId);
 	}
 	
-	public boolean hasPass(Identifier passId) {
+	public static boolean hasPass(Identifier passId) {
 		return ((GameRendererAccessor)MinecraftClient.getInstance().gameRenderer).isShaderEnabled(passId);
 	}
 }
