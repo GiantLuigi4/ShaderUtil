@@ -6,4 +6,8 @@ import net.minecraft.util.Identifier;
 public interface GameRendererAccessor {
 	PostProcessShader addPass(Identifier passId, Identifier shader);
 	void removePass(Identifier passId);
+	
+	boolean isShaderEnabled(Identifier passId);
+	
+	PostProcessShader getPass(Identifier passId);
 }

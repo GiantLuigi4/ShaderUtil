@@ -32,6 +32,11 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 	@Shadow @Final private List<Framebuffer> defaultSizedTargets;
 	@Shadow @Final private Framebuffer mainTarget;
 	@Shadow @Final private Map<String, Framebuffer> targetsByName;
+	
+	@Shadow public abstract void addTarget(String name, int width, int height);
+	
+	@Shadow private int width;
+	@Shadow private int height;
 	@Unique
 	HashMap<Identifier, PostProcessShader> shaderUtilShaders = new HashMap<>();
 	
@@ -41,6 +46,11 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 	@Inject(at = @At("TAIL"), method = "render")
 	public void drawShaderUtilShaders(float tickDelta, CallbackInfo ci) {
 		if (shaderUtilShaders.isEmpty()) return;
+		
+		if (targetsByName.isEmpty()) {
+			// currently; if this ever gets called, the game will likely crash
+			addTarget("shaderutil:foolproofing", width, height);
+		}
 		
 		Framebuffer buffer = null;
 		for (String s : targetsByName.keySet()) {
@@ -116,6 +126,11 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 	@Override
 	public PostProcessShader removePass(Identifier passId) {
 		return shaderUtilShaders.remove(passId);
+	}
+	
+	@Override
+	public PostProcessShader getPass(Identifier passId) {
+		return shaderUtilShaders.get(passId);
 	}
 	
 	@Override

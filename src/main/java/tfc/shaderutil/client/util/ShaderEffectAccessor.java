@@ -17,4 +17,6 @@ public interface ShaderEffectAccessor {
 	HashMap<Identifier, PostProcessShader> getPasses();
 	
 	void clearPasses();
+	
+	PostProcessShader getPass(Identifier passId);
 }

@@ -70,6 +70,8 @@ public class GameRendererMixin implements GameRendererAccessor {
 	
 	@Inject(at = @At("TAIL"), method = "loadShaders")
 	public void postLoadShaders(ResourceManager manager, CallbackInfo ci) {
+		System.out.println(isShaderEnabled(new Identifier("shaderutil:blur_x")));
+		passes.clear();
 		if (shader == dummyEffect) shader = null;
 		if (dummyEffect != null) {
 			dummyEffect.close();
@@ -90,6 +92,23 @@ public class GameRendererMixin implements GameRendererAccessor {
 		} catch (Throwable err) {
 			err.printStackTrace();
 		}
+		
+//		PostProcessShader shader = PostProcessUtils.addPass("shaderutil:blur_x", "minecraft:blur");
+//		shader.getProgram().enable();
+//		shader.getProgram().getUniformByNameOrDummy("BlurDir").set(1f, 0f);
+//		shader.getProgram().getUniformByNameOrDummy("Radius").set(3f);
+//		shader.getProgram().disable();
+//
+//		shader = PostProcessUtils.addPass("shaderutil:blur_y", "minecraft:blur");
+//		shader.getProgram().enable();
+//		shader.getProgram().getUniformByNameOrDummy("BlurDir").set(0f, 1f);
+//		shader.getProgram().getUniformByNameOrDummy("Radius").set(3f);
+//		shader.getProgram().disable();
+	}
+	
+	@Override
+	public boolean isShaderEnabled(Identifier passId) {
+		return passes.containsKey(passId);
 	}
 	
 	@Inject(at = @At("TAIL"), method = "onCameraEntitySet")
@@ -189,5 +208,12 @@ public class GameRendererMixin implements GameRendererAccessor {
 		if (shader != dummyEffect) {
 			shader1 = ((ShaderEffectAccessor) dummyEffect).removePass(passId);
 		}
+	}
+	
+	@Override
+	public PostProcessShader getPass(Identifier passId) {
+		passes.remove(passId);
+		PostProcessShader shader1 = ((ShaderEffectAccessor) dummyEffect).getPass(passId);
+		return shader1;
 	}
 }
