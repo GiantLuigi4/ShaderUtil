@@ -1,0 +1,28 @@
+accessWidener   v1          named
+accessible      class       net/minecraft/client/render/RenderLayer
+accessible      method      net/minecraft/client/render/RenderLayer     of      (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
+accessible      class       net/minecraft/client/render/RenderPhase$WriteMaskState
+accessible      class       net/minecraft/client/render/RenderLayer$MultiPhaseParameters
+accessible      class       net/minecraft/client/render/RenderPhase$Shader
+accessible      class       net/minecraft/client/render/RenderPhase$Texture
+accessible      class       net/minecraft/client/render/RenderPhase$Cull
+accessible      class       net/minecraft/client/render/RenderPhase$DepthTest
+accessible      class       net/minecraft/client/render/RenderPhase$Texturing
+accessible      class       net/minecraft/client/render/RenderPhase$Transparency
+accessible      method      net/minecraft/client/render/RenderLayer     of      (Lnet/minecraft/client/render/RenderPhase$Shader;)Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
+accessible      method      net/minecraft/client/render/RenderLayer     of      (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
+accessible      method      net/minecraft/client/render/RenderLayer     of      (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;ILnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
+accessible      class       net/minecraft/client/render/RenderPhase$TextureBase
+
+
+accessible field net/minecraft/client/render/RenderPhase ENABLE_LIGHTMAP Lnet/minecraft/client/render/RenderPhase$Lightmap;
+accessible field net/minecraft/client/render/RenderPhase DISABLE_LIGHTMAP Lnet/minecraft/client/render/RenderPhase$Lightmap;
+
+accessible field net/minecraft/client/render/RenderPhase MIPMAP_BLOCK_ATLAS_TEXTURE Lnet/minecraft/client/render/RenderPhase$Texture;
+
+accessible field net/minecraft/client/render/RenderPhase TRANSLUCENT_TRANSPARENCY Lnet/minecraft/client/render/RenderPhase$Transparency;
+accessible field net/minecraft/client/render/RenderPhase NO_TRANSPARENCY Lnet/minecraft/client/render/RenderPhase$Transparency;
+
+accessible field net/minecraft/client/render/RenderPhase TRANSLUCENT_TARGET Lnet/minecraft/client/render/RenderPhase$Target;
+accessible field net/minecraft/client/render/RenderPhase MAIN_TARGET Lnet/minecraft/client/render/RenderPhase$Target;
+accessible field net/minecraft/client/render/RenderPhase ITEM_TARGET Lnet/minecraft/client/render/RenderPhase$Target;

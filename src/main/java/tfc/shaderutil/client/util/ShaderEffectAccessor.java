@@ -11,12 +11,8 @@ public interface ShaderEffectAccessor {
 	PostProcessShader removePass(Identifier passId);
 	void removePass(PostProcessShader pass);
 	void removeLast();
-	
 	void setProjectionMatrix(Matrix4f matrix);
-	
 	HashMap<Identifier, PostProcessShader> getPasses();
-	
 	void clearPasses();
-	
 	PostProcessShader getPass(Identifier passId);
 }

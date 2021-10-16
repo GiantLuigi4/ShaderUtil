@@ -11,6 +11,7 @@
   "license": "MIT",
   "icon": "assets/ShaderUtil/icon.png",
   "environment": "client",
+  "accessWidener" : "shaderutil.accesswidener",
   "entrypoints": {
     "client": [
       "tfc.shaderutil.client.ShaderUtilClient"

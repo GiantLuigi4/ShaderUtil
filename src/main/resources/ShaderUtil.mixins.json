@@ -4,9 +4,10 @@
   "package": "tfc.shaderutil.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "PostProcessShaderMixin"
   ],
   "client": [
+    "PostProcessShaderMixin",
+    "RenderLayerMixin",
     "GameRendererMixin",
     "JsonEffectGlShaderMixin",
     "ShaderEffectMixin",

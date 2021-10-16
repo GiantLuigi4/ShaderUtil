@@ -1,4 +1,4 @@
-package tfc.shaderutil.client;
+package tfc.shaderutil.client.api;
 
 import net.minecraft.client.gl.ShaderParseException;
 import net.minecraft.client.render.Shader;
@@ -9,6 +9,7 @@ import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tfc.shaderutil.client.ShaderFactory;
 
 import java.util.HashMap;
 
@@ -31,6 +32,7 @@ public class CoreShaderRegistry {
 	}
 	
 	public static void reload(ResourceFactory factory) {
+		for (Shader value : initializedShaders.values()) value.close();
 		initializedShaders.clear();
 		for (Identifier identifier : registeredFactories.keySet()) {
 			try {

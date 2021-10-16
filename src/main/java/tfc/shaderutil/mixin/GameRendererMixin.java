@@ -19,8 +19,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import tfc.shaderutil.client.CoreShaderRegistry;
-import tfc.shaderutil.client.PostProcessUtils;
+import tfc.shaderutil.client.api.CoreShaderRegistry;
 import tfc.shaderutil.client.util.GameRendererAccessor;
 import tfc.shaderutil.client.util.ShaderEffectAccessor;
 
@@ -92,6 +91,11 @@ public class GameRendererMixin implements GameRendererAccessor {
 		} catch (Throwable err) {
 			err.printStackTrace();
 		}
+		
+//		PostProcessShader shader = PostProcessingUtils.addPass("shaderutil:invert", "minecraft:invert");
+//		shader.getProgram().getUniformByNameOrDummy("InverseAmount").set(0.8f);
+//		PostProcessUtils.addPass("shaderutil:blit", "minecraft:blit");
+//		PostProcessingUtils.addPass("shaderutil:blit1", "minecraft:blit");
 		
 //		PostProcessShader shader = PostProcessUtils.addPass("shaderutil:blur_x", "minecraft:blur");
 //		shader.getProgram().enable();
