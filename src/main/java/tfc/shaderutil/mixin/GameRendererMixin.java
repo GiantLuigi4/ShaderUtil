@@ -91,23 +91,6 @@ public class GameRendererMixin implements GameRendererAccessor {
 		} catch (Throwable err) {
 			err.printStackTrace();
 		}
-		
-//		PostProcessShader shader = PostProcessingUtils.addPass("shaderutil:invert", "minecraft:invert");
-//		shader.getProgram().getUniformByNameOrDummy("InverseAmount").set(0.8f);
-//		PostProcessUtils.addPass("shaderutil:blit", "minecraft:blit");
-//		PostProcessingUtils.addPass("shaderutil:blit1", "minecraft:blit");
-		
-//		PostProcessShader shader = PostProcessUtils.addPass("shaderutil:blur_x", "minecraft:blur");
-//		shader.getProgram().enable();
-//		shader.getProgram().getUniformByNameOrDummy("BlurDir").set(1f, 0f);
-//		shader.getProgram().getUniformByNameOrDummy("Radius").set(3f);
-//		shader.getProgram().disable();
-//
-//		shader = PostProcessUtils.addPass("shaderutil:blur_y", "minecraft:blur");
-//		shader.getProgram().enable();
-//		shader.getProgram().getUniformByNameOrDummy("BlurDir").set(0f, 1f);
-//		shader.getProgram().getUniformByNameOrDummy("Radius").set(3f);
-//		shader.getProgram().disable();
 	}
 	
 	@Override
