@@ -6,12 +6,15 @@
   "mixins": [
   ],
   "client": [
+    "GameRendererMixin",
+    "GlStateManagerMixin",
+    "JsonEffectGlShaderMixin",
     "PostProcessShaderMixin",
     "RenderLayerMixin",
-    "GameRendererMixin",
-    "JsonEffectGlShaderMixin",
+    "ScreenshotRecorderMixin",
     "ShaderEffectMixin",
-    "ShaderMixin"
+    "ShaderMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

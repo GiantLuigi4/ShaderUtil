@@ -1,8 +1,15 @@
 package tfc.shaderutil.mixin;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostProcessShader;
 import net.minecraft.client.gl.ShaderEffect;
+import net.minecraft.client.gl.SimpleFramebuffer;
+import net.minecraft.client.render.*;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
@@ -12,9 +19,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import tfc.shaderutil.client.util.PostProcessShaderAccessor;
-import tfc.shaderutil.client.util.ShaderEffectAccessor;
+import tfc.shaderutil.client.api.FBOBinder;
+import tfc.shaderutil.client.util.*;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,20 +36,61 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 	@Shadow
 	protected abstract Framebuffer getTarget(String name);
 	
-	@Shadow private Matrix4f projectionMatrix;
-	@Shadow @Final private List<Framebuffer> defaultSizedTargets;
-	@Shadow @Final private Framebuffer mainTarget;
-	@Shadow @Final private Map<String, Framebuffer> targetsByName;
+	@Shadow
+	private Matrix4f projectionMatrix;
+	@Shadow
+	@Final
+	private List<Framebuffer> defaultSizedTargets;
+	@Shadow
+	@Final
+	private Framebuffer mainTarget;
+	@Shadow
+	@Final
+	private Map<String, Framebuffer> targetsByName;
 	
-	@Shadow public abstract void addTarget(String name, int width, int height);
+	@Shadow
+	public abstract void addTarget(String name, int width, int height);
 	
-	@Shadow private int width;
-	@Shadow private int height;
+	@Shadow
+	private int width;
+	@Shadow
+	private int height;
 	@Unique
 	HashMap<Identifier, PostProcessShader> shaderUtilShaders = new HashMap<>();
 	
 	@Unique
 	Framebuffer endTarg;
+	
+	@Inject(at = @At("HEAD"), method = "render")
+	public void copyDepthBuffer(float tickDelta, CallbackInfo ci) {
+//		Framebuffer depth = TargetAttacher.depthBuffer;
+//		depth.beginWrite(true);
+//		drawBuffer(MinecraftClient.getInstance().getFramebuffer());
+//		try {
+//			if (!new File("test.png").exists()) {
+//				NativeImage img = ScreenshotRecorder.takeScreenshot(MinecraftClient.getInstance().getFramebuffer());
+//				img.writeTo(new File("test.png"));
+//				img.close();
+//			}
+//		} catch (Throwable ignored) {
+//		}
+//		depth.endWrite();
+		
+//		int target = GLTracker.getBound(36160);
+//		int lvx = GLTracker.lvx();
+//		int lvy = GLTracker.lvy();
+//		int rvx = GLTracker.rvx();
+//		int rvy = GLTracker.rvy();
+		Framebuffer depth = TargetAttacher.depthBuffer;
+		FBOBinder binder = new FBOBinder();
+//		depth.beginWrite(true);
+//		BufferUtils.drawBuffer(MinecraftClient.getInstance().getFramebuffer(), false);
+//		depth.endWrite();
+		TargetAttacher.mergeDepth(depth, MinecraftClient.getInstance().getFramebuffer());
+		binder.rebind();
+//		GlStateManager._glBindFramebuffer(36160, target);
+//		GlStateManager._viewport(lvx, lvy, rvx, rvy);
+	}
 	
 	@Inject(at = @At("TAIL"), method = "render")
 	public void drawShaderUtilShaders(float tickDelta, CallbackInfo ci) {
@@ -67,7 +116,7 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 		Framebuffer alt = buffer;
 		
 		for (PostProcessShader shaderUtilShader : shaderUtilShaders.values()) {
-			if (((PostProcessShaderAccessor)shaderUtilShader).getMatrix() != null) {
+			if (((PostProcessShaderAccessor) shaderUtilShader).getMatrix() != null) {
 				((PostProcessShaderAccessor) shaderUtilShader).setOutput(alternator);
 				if (alternator == src) alternator = alt;
 				else alternator = src;
@@ -92,6 +141,8 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 		
 		for (PostProcessShader shaderUtilShader : shaderUtilShaders.values())
 			shaderUtilShader.setProjectionMatrix(projectionMatrix);
+		
+		TargetAttacher.depthBuffer.resize(targetsWidth, targetsHeight, MinecraftClient.IS_SYSTEM_MAC);
 	}
 	
 	@Inject(at = @At("TAIL"), method = "close")
@@ -142,7 +193,7 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 	public void setProjectionMatrix(Matrix4f matrix) {
 		this.projectionMatrix = matrix;
 	}
-	
+
 //	@Inject(at = @At("HEAD"), method = "render")
 //	public void tellShadersNo(float tickDelta, CallbackInfo ci) {
 //		if (!shaderUtilShaders.isEmpty()) {
@@ -154,4 +205,9 @@ public abstract class ShaderEffectMixin implements ShaderEffectAccessor {
 //			((PostProcessShaderAccessor) endShader).setOutput(target1);
 //		}
 //	}
+	
+	@Override
+	public Framebuffer getShaderTarget(String name) {
+		return getTarget(name);
+	}
 }

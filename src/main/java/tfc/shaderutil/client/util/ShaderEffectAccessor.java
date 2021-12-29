@@ -1,5 +1,6 @@
 package tfc.shaderutil.client.util;
 
+import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostProcessShader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
@@ -15,4 +16,6 @@ public interface ShaderEffectAccessor {
 	HashMap<Identifier, PostProcessShader> getPasses();
 	void clearPasses();
 	PostProcessShader getPass(Identifier passId);
+	
+	Framebuffer getShaderTarget(String name);
 }

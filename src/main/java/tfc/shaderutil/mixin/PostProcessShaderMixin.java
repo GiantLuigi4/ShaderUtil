@@ -1,12 +1,14 @@
 package tfc.shaderutil.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.gl.JsonEffectGlShader;
 import net.minecraft.client.gl.PostProcessShader;
 import net.minecraft.util.math.Matrix4f;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfc.shaderutil.client.util.PostProcessShaderAccessor;
 
 @Mixin(PostProcessShader.class)
@@ -15,6 +17,15 @@ public class PostProcessShaderMixin implements PostProcessShaderAccessor {
 	@Mutable @Shadow @Final public Framebuffer output;
 	
 	@Shadow private Matrix4f projectionMatrix;
+	
+	@Shadow @Final private JsonEffectGlShader program;
+	
+	@Unique int tick;
+	
+	@Inject(at = @At("HEAD"), method = "render")
+	public void preRender(float time, CallbackInfo ci) {
+		program.getUniformByNameOrDummy("Ticks").set(time + MinecraftClient.getInstance().getTickDelta());
+	}
 	
 	@Override
 	public void setOutput(Framebuffer framebuffer) {
@@ -29,5 +40,10 @@ public class PostProcessShaderMixin implements PostProcessShaderAccessor {
 	@Override
 	public Matrix4f getMatrix() {
 		return projectionMatrix;
+	}
+	
+	@Override
+	public void tick() {
+		tick++;
 	}
 }

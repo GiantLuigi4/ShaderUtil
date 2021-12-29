@@ -21,7 +21,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfc.shaderutil.client.api.CoreShaderRegistry;
 import tfc.shaderutil.client.util.GameRendererAccessor;
+import tfc.shaderutil.client.util.PostProcessShaderAccessor;
 import tfc.shaderutil.client.util.ShaderEffectAccessor;
+import tfc.shaderutil.client.util.TargetAttacher;
 
 import java.util.HashMap;
 
@@ -88,8 +90,18 @@ public class GameRendererMixin implements GameRendererAccessor {
 			this.dummyEffect = tempDummyEffect;
 //			if (shader == null) shader = dummyEffect;
 //			((ShaderEffectAccessor) dummyEffect).setProjectionMatrix(Matrix4f.projectionMatrix(1, 1, 1, 1));
+
+//			PostProcessShader shader = PostProcessingUtils.addPass("shaderutil:depth", "shaderutil:depthbuffer");
+//			shader = PostProcessingUtils.addPass("shaderutil:blit", "blit");
 		} catch (Throwable err) {
 			err.printStackTrace();
+		}
+	}
+	
+	@Inject(at = @At("HEAD"), method = "tick")
+	public void preTick(CallbackInfo ci) {
+		for (PostProcessShader value : passes.values()) {
+			((PostProcessShaderAccessor) value).tick();
 		}
 	}
 	
@@ -158,6 +170,7 @@ public class GameRendererMixin implements GameRendererAccessor {
 		PostProcessShader shader1 = null;
 		try {
 			shader1 = dummyEffect.addPass(shader.toString(), client.getFramebuffer(), client.getFramebuffer());
+			TargetAttacher.attachTargets(dummyEffect, shader1);
 			passes.put(passId, shader1);
 			if (shader1 != null) {
 				((ShaderEffectAccessor) dummyEffect).addPass(passId, shader1);

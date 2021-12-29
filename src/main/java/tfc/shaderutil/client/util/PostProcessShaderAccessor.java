@@ -7,4 +7,6 @@ public interface PostProcessShaderAccessor {
 	void setOutput(Framebuffer framebuffer);
 	void setInput(Framebuffer framebuffer);
 	Matrix4f getMatrix();
+	
+	void tick();
 }
