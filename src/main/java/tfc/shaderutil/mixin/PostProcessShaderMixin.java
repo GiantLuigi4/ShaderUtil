@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfc.shaderutil.client.util.PostProcessShaderAccessor;
 
+import java.util.List;
+
 @Mixin(PostProcessShader.class)
 public class PostProcessShaderMixin implements PostProcessShaderAccessor {
 	@Mutable @Shadow @Final public Framebuffer input;
@@ -20,6 +22,7 @@ public class PostProcessShaderMixin implements PostProcessShaderAccessor {
 	
 	@Shadow @Final private JsonEffectGlShader program;
 	
+	@Shadow @Final private List<String> samplerNames;
 	@Unique int tick;
 	
 	@Inject(at = @At("HEAD"), method = "render")
@@ -45,5 +48,10 @@ public class PostProcessShaderMixin implements PostProcessShaderAccessor {
 	@Override
 	public void tick() {
 		tick++;
+	}
+	
+	@Override
+	public boolean hasAuxTarget(String name) {
+		return samplerNames.contains(name);
 	}
 }

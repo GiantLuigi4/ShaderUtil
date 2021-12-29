@@ -5,6 +5,7 @@ import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostProcessShader;
 import net.minecraft.util.Identifier;
 import tfc.shaderutil.client.util.GameRendererAccessor;
+import tfc.shaderutil.client.util.PostProcessShaderAccessor;
 
 public class PostProcessingUtils {
 	public static PostProcessShader addPass(String passId, String name) {
@@ -37,5 +38,9 @@ public class PostProcessingUtils {
 	
 	public static boolean hasPass(Identifier passId) {
 		return ((GameRendererAccessor) MinecraftClient.getInstance().gameRenderer).isShaderEnabled(passId);
+	}
+	
+	public boolean checkAuxTarget(PostProcessShader shader, String name) {
+		return ((PostProcessShaderAccessor)shader).hasAuxTarget(name);
 	}
 }

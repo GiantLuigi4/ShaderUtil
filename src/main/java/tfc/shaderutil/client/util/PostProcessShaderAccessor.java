@@ -8,5 +8,7 @@ public interface PostProcessShaderAccessor {
 	void setInput(Framebuffer framebuffer);
 	Matrix4f getMatrix();
 	
+	boolean hasAuxTarget(String name);
+	
 	void tick();
 }
