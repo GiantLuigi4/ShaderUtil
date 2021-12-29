@@ -1,5 +1,6 @@
 package tfc.shaderutil.client.util;
 
+import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostProcessShader;
 import net.minecraft.util.Identifier;
 
@@ -8,4 +9,5 @@ public interface GameRendererAccessor {
 	void removePass(Identifier passId);
 	boolean isShaderEnabled(Identifier passId);
 	PostProcessShader getPass(Identifier passId);
+	PostProcessShader createShader(Identifier shader, Framebuffer input, Framebuffer output);
 }

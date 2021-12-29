@@ -1,10 +1,12 @@
 package tfc.shaderutil.mixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostProcessShader;
 import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.gl.ShaderParseException;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.MapRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -28,7 +30,7 @@ import tfc.shaderutil.client.util.TargetAttacher;
 import java.util.HashMap;
 
 @Mixin(GameRenderer.class)
-public class GameRendererMixin implements GameRendererAccessor {
+public abstract class GameRendererMixin implements GameRendererAccessor {
 	@Shadow
 	private boolean shadersEnabled;
 	
@@ -43,6 +45,8 @@ public class GameRendererMixin implements GameRendererAccessor {
 	@Shadow
 	@Final
 	private ResourceManager resourceManager;
+	
+	@Shadow public abstract MapRenderer getMapRenderer();
 	
 	@Inject(at = @At(value = "TAIL"), method = "loadShaders")
 	public void preClear(ResourceManager manager, CallbackInfo ci) {
@@ -163,6 +167,28 @@ public class GameRendererMixin implements GameRendererAccessor {
 	@Inject(at = @At("TAIL"), method = "loadProjectionMatrix")
 	public void postLoadProjMat(Matrix4f matrix, CallbackInfo ci) {
 //		((ShaderEffectAccessor) dummyEffect).setProjectionMatrix(matrix);
+	}
+	
+	@Override
+	public PostProcessShader createShader(Identifier shader, Framebuffer input, Framebuffer output) {
+		PostProcessShader shader1 = null;
+		try {
+			ResourceManager manager = ((ShaderEffectAccessor)dummyEffect).getResourceManager();
+			shader1 = new PostProcessShader(manager, shader.toString(), input, output);
+		} catch (Throwable err) {
+			Throwable cause = err;
+			StringBuilder exception = new StringBuilder();
+			// heck you too mojang, I don't care about your stupid wrapper which consumes the actual issue
+			if (cause instanceof ShaderParseException || cause instanceof RuntimeException) {
+				if (cause.getCause() != null) cause = cause.getCause();
+			}
+			exception.append(cause.getClass().getName()).append(" : ").append(cause.getMessage());
+			for (StackTraceElement stackTraceElement : cause.getStackTrace())
+				exception.append("\n  ").append(stackTraceElement.toString());
+			LOGGER.error(exception.toString());
+		}
+		
+		return shader1;
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package tfc.shaderutil.client.util;
 
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostProcessShader;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
 
@@ -18,4 +19,6 @@ public interface ShaderEffectAccessor {
 	PostProcessShader getPass(Identifier passId);
 	
 	Framebuffer getShaderTarget(String name);
+	
+	ResourceManager getResourceManager();
 }
